@@ -1,430 +1,686 @@
 <!DOCTYPE html>
-<html lang="zh-TW"><head>
-  <meta charset="utf-8">
-  <title>Michelle Lu 部落格</title>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>桃園國際機場第三航廈（T3）航線搬遷策略分析簡報</title>
+    <style>
+        :root {
+            --primary: #1B365D;
+            --primary-light: #2A4D7E;
+            --secondary: #2B6C72;
+            --accent-red: #C53030;
+            --accent-amber: #DD6B20;
+            --bg-slide: #FFFFFF;
+            --bg-page: #0F172A;
+            --text-dark: #1E293B;
+            --text-muted: #64748B;
+            --border: #E2E8F0;
+        }
 
-  <!-- mobile responsive meta -->
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="this is meta description">
-  <meta name="author" content="Michelle Lu">
-    
-  
-  <meta name="theme-name" content="liva-hugo" />
-  
-  <meta name="generator" content="Hugo 0.114.0">
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
-  <!-- plugins -->
-  
-  <link rel="stylesheet" href="https://pengda168.github.io/plugins/bootstrap/bootstrap.min.css ">
-  
-  <link rel="stylesheet" href="https://pengda168.github.io/plugins/slick/slick.css ">
-  
-  <link rel="stylesheet" href="https://pengda168.github.io/plugins/themify-icons/themify-icons.css ">
-  
-  <link rel="stylesheet" href="https://pengda168.github.io/plugins/venobox/venobox.css ">
-  
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft JhengHei", "PingFang TC", sans-serif;
+            background-color: var(--bg-page);
+            color: var(--text-dark);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden;
+        }
 
-  <!-- Main Stylesheet -->
-  
-  <link rel="stylesheet" href="https://pengda168.github.io/scss/style.min.css" media="screen">
+        /* Presentation Wrapper */
+        .presentation-container {
+            position: relative;
+            width: 1280px;
+            height: 720px;
+            max-width: 96vw;
+            max-height: 90vh;
+            aspect-ratio: 16 / 9;
+            background: var(--bg-slide);
+            border-radius: 16px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
 
-  <!--Favicon-->
-  <link rel="shortcut icon" href="https://pengda168.github.io/images/favicon.png " type="image/x-icon">
-  <link rel="icon" href="https://pengda168.github.io/images/favicon.png " type="image/x-icon">
+        /* Progress Bar */
+        .progress-bar-container {
+            width: 100%;
+            height: 5px;
+            background: #E2E8F0;
+        }
+        .progress-bar {
+            height: 100%;
+            background: var(--primary);
+            width: 16.66%;
+            transition: width 0.3s ease;
+        }
 
-  
+        /* Slide Viewport */
+        .slides-viewport {
+            flex: 1;
+            position: relative;
+            overflow: hidden;
+        }
 
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            padding: 40px 60px 50px 60px;
+            display: none;
+            flex-direction: column;
+            opacity: 0;
+            transition: opacity 0.35s ease, transform 0.35s ease;
+            transform: translateY(10px);
+        }
+
+        .slide.active {
+            display: flex;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Slide Header */
+        .slide-header {
+            margin-bottom: 24px;
+            border-bottom: 2px solid var(--border);
+            padding-bottom: 14px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+
+        .slide-title-group h2 {
+            font-size: 26px;
+            color: var(--primary);
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .slide-title-group .category {
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+            color: var(--secondary);
+            margin-bottom: 4px;
+        }
+
+        .header-tag {
+            font-size: 13px;
+            padding: 4px 12px;
+            border-radius: 20px;
+            background: #EEF2F6;
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        /* Slide Body Content */
+        .slide-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        /* Title Slide Layout */
+        .title-slide-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+            padding-left: 20px;
+        }
+
+        .title-badge {
+            display: inline-block;
+            background: #EEF2F6;
+            color: var(--primary);
+            font-size: 14px;
+            font-weight: 700;
+            padding: 6px 16px;
+            border-radius: 30px;
+            margin-bottom: 20px;
+            border: 1px solid #CBD5E1;
+        }
+
+        .title-slide-content h1 {
+            font-size: 42px;
+            color: var(--primary);
+            line-height: 1.25;
+            font-weight: 800;
+            margin-bottom: 16px;
+        }
+
+        .title-slide-content .subtitle {
+            font-size: 22px;
+            color: var(--secondary);
+            font-weight: 500;
+            margin-bottom: 40px;
+        }
+
+        .title-footer {
+            display: flex;
+            gap: 30px;
+            font-size: 15px;
+            color: var(--text-muted);
+            border-top: 1px solid var(--border);
+            padding-top: 20px;
+            width: 100%;
+        }
+
+        /* Grid Cards */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .card {
+            background: #F8FAFC;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+        }
+
+        .card.highlight-amber {
+            border-top: 4px solid var(--accent-amber);
+        }
+
+        .card.highlight-red {
+            border-top: 4px solid var(--accent-red);
+        }
+
+        .card.highlight-navy {
+            border-top: 4px solid var(--primary);
+        }
+
+        .card h3 {
+            font-size: 18px;
+            color: var(--primary);
+            margin-bottom: 12px;
+            font-weight: 700;
+        }
+
+        .card p, .card li {
+            font-size: 15px;
+            color: #334155;
+            line-height: 1.6;
+        }
+
+        .card ul {
+            padding-left: 18px;
+        }
+
+        .card li {
+            margin-bottom: 8px;
+        }
+
+        /* Stat Box */
+        .stat-banner {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 10px;
+        }
+
+        .stat-item {
+            flex: 1;
+            background: #F1F5F9;
+            border-radius: 10px;
+            padding: 16px;
+            text-align: center;
+            border: 1px solid #E2E8F0;
+        }
+
+        .stat-num {
+            font-size: 32px;
+            font-weight: 800;
+            color: var(--primary);
+            line-height: 1.1;
+        }
+
+        .stat-num.red { color: var(--accent-red); }
+        .stat-num.amber { color: var(--accent-amber); }
+
+        .stat-sub {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-top: 4px;
+            font-weight: 600;
+        }
+
+        /* Presentation Tables */
+        .slide-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+            background: #FFFFFF;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+        }
+
+        .slide-table th {
+            background: var(--primary);
+            color: #FFFFFF;
+            padding: 12px 14px;
+            font-weight: 600;
+            text-align: left;
+        }
+
+        .slide-table td {
+            padding: 11px 14px;
+            border-bottom: 1px solid var(--border);
+            color: #334155;
+            line-height: 1.45;
+        }
+
+        .slide-table tr:nth-child(even) {
+            background: #F8FAFC;
+        }
+
+        .tag-red {
+            display: inline-block;
+            background: #FEE2E2;
+            color: #991B1B;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .tag-green {
+            display: inline-block;
+            background: #D1FAE5;
+            color: #065F46;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        /* Callout Bar */
+        .slide-callout {
+            border-left: 4px solid var(--accent-red);
+            background: #FEF2F2;
+            padding: 14px 18px;
+            border-radius: 0 8px 8px 0;
+            font-size: 14.5px;
+            color: #991B1B;
+            line-height: 1.5;
+        }
+
+        /* Slide Controls & Footer */
+        .controls-bar {
+            padding: 12px 30px;
+            background: #F8FAFC;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .slide-counter {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-nav {
+            background: #FFFFFF;
+            border: 1px solid #CBD5E1;
+            padding: 6px 14px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-dark);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-nav:hover {
+            background: var(--primary);
+            color: #FFFFFF;
+            border-color: var(--primary);
+        }
+
+        .key-hint {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+    </style>
 </head>
 <body>
-<!-- preloader start -->
-<div class="preloader">
-  
-</div>
-<!-- preloader end -->
-<!-- navigation -->
-<header class="navigation">
-  <div class="container">
-    
-    <nav class="navbar navbar-expand-lg navbar-white bg-transparent border-bottom pl-0">
-      <a class="navbar-brand mobile-view" href="https://pengda168.github.io"><img class="img-fluid"
-          src="https://pengda168.github.io/images/logo.png" alt="Michelle Lu 部落格"></a>
-      <button class="navbar-toggler border-0" type="button" data-toggle="collapse" data-target="#navigation">
-        <i class="ti-menu"></i>
-      </button>
 
-      <div class="collapse navbar-collapse text-center" id="navigation">
-        <div class="desktop-view">
-          <ul class="navbar-nav mr-auto">
-            
-            <li class="nav-item">
-              <a class="nav-link" href="#"><i class="ti-facebook"></i></a>
-            </li>
-            
-            <li class="nav-item">
-              <a class="nav-link" href="#"><i class="ti-twitter-alt"></i></a>
-            </li>
-            
-            <li class="nav-item">
-              <a class="nav-link" href="#"><i class="ti-instagram"></i></a>
-            </li>
-            
-            <li class="nav-item">
-              <a class="nav-link" href="#"><i class="ti-github"></i></a>
-            </li>
-            
-            <li class="nav-item">
-              <a class="nav-link" href="#"><i class="ti-linkedin"></i></a>
-            </li>
-            
-          </ul>
-        </div>
-
-        <a class="navbar-brand mx-auto desktop-view" href="https://pengda168.github.io"><img class="img-fluid"
-            src="https://pengda168.github.io/images/logo.png" alt="Michelle Lu 部落格"></a>
-
-        <ul class="navbar-nav">
-          
-          
-          <li class="nav-item">
-            <a class="nav-link" href="https://pengda168.github.io/about/">About</a>
-          </li>
-          
-          
-          
-          <li class="nav-item">
-            <a class="nav-link" href="https://pengda168.github.io/blog/">Post</a>
-          </li>
-          
-          
-        </ul>
-
-        
-        <!-- search -->
-        <div class="search pl-lg-4">
-          <button id="searchOpen" class="search-btn"><i class="ti-search"></i></button>
-          <div class="search-wrapper">
-            <form action="https://pengda168.github.io/search" class="h-100">
-              <input class="search-box px-4" id="search-query" name="s" type="search" placeholder="Type & Hit Enter...">
-            </form>
-            <button id="searchClose" class="search-close"><i class="ti-close text-dark"></i></button>
-          </div>
-        </div>
-        
-
-        
-      </div>
-    </nav>
-  </div>
-</header>
-<!-- /navigation -->
-
-<section class="section-sm">
-  <div class="container">
-    <div class="row">
-      <div class="col-lg-8 mx-auto">
-        
-        <a href="/categories/go-language"
-          class="text-primary">Go language</a>
-        
-        <h2>How To Use Checklists To Improve Your UX</h2>
-        <div class="mb-3 post-meta">
-          <span>By Michelle Lu</span>
-          
-          <span class="border-bottom border-primary px-2 mx-1"></span>
-          <span>29 October 2019</span>
-          
-        </div>
-        
-        <img src="https://pengda168.github.io/images/post/post-2.jpg" class="img-fluid w-100 mb-4" alt="How To Use Checklists To Improve Your UX">
-        
-        <div class="content mb-5">
-          <h1 id="heading-1">Heading 1</h1>
-<h2 id="heading-2">Heading 2</h2>
-<h3 id="heading-3">Heading 3</h3>
-<h4 id="heading-4">Heading 4</h4>
-<h5 id="heading-5">Heading 5</h5>
-<h6 id="heading-6">Heading 6</h6>
-<!-- raw HTML omitted -->
-<h5 id="emphasis">Emphasis</h5>
-<p>Emphasis, aka italics, with <em>asterisks</em> or <em>underscores</em>.</p>
-<p>Strong emphasis, aka bold, with <strong>asterisks</strong> or <strong>underscores</strong>.</p>
-<p>Combined emphasis with <strong>asterisks and <em>underscores</em></strong>.</p>
-<p>Strikethrough uses two tildes. <del>Scratch this.</del></p>
-<!-- raw HTML omitted -->
-<h5 id="link">Link</h5>
-<p><a href="https://www.google.com">I&rsquo;m an inline-style link</a></p>
-<p><a href="https://www.google.com" title="Google's Homepage">I&rsquo;m an inline-style link with title</a></p>
-<p><a href="https://www.mozilla.org">I&rsquo;m a reference-style link</a></p>
-<p><a href="../blob/master/LICENSE">I&rsquo;m a relative reference to a repository file</a></p>
-<p><a href="http://slashdot.org">You can use numbers for reference-style link definitions</a></p>
-<p>Or leave it empty and use the <a href="http://www.reddit.com">link text itself</a>.</p>
-<p>URLs and URLs in angle brackets will automatically get turned into links.
-<a href="http://www.example.com">http://www.example.com</a> or <a href="http://www.example.com">http://www.example.com</a> and sometimes
-example.com (but not on Github, for example).</p>
-<p>Some text to show that the reference links can follow later.</p>
-<!-- raw HTML omitted -->
-<h5 id="paragraph">Paragraph</h5>
-<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quam nihil enim maxime corporis cumque totam aliquid nam sint inventore optio modi neque laborum officiis necessitatibus, facilis placeat pariatur! Voluptatem, sed harum pariatur adipisci voluptates voluptatum cumque, porro sint minima similique magni perferendis fuga! Optio vel ipsum excepturi tempore reiciendis id quidem? Vel in, doloribus debitis nesciunt fugit sequi magnam accusantium modi neque quis, vitae velit, pariatur harum autem a! Velit impedit atque maiores animi possimus asperiores natus repellendus excepturi sint architecto eligendi non, omnis nihil. Facilis, doloremque illum. Fugit optio laborum minus debitis natus illo perspiciatis corporis voluptatum rerum laboriosam.</p>
-<!-- raw HTML omitted -->
-<h5 id="list">List</h5>
-<ol>
-<li>List item</li>
-<li>List item</li>
-<li>List item</li>
-<li>List item</li>
-<li>List item</li>
-</ol>
-<h5 id="unordered-list">Unordered List</h5>
-<ul>
-<li>List item</li>
-<li>List item</li>
-<li>List item</li>
-<li>List item</li>
-<li>List item</li>
-</ul>
-<!-- raw HTML omitted -->
-<h5 id="code-and-syntax-highlighting">Code and Syntax Highlighting</h5>
-<p>Inline <code>code</code> has <code>back-ticks around</code> it.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">s</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;JavaScript syntax highlighting&#34;</span>;
-</span></span><span style="display:flex;"><span><span style="color:#a6e22e">alert</span>(<span style="color:#a6e22e">s</span>);
-</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>s <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;Python syntax highlighting&#34;</span>
-</span></span><span style="display:flex;"><span>print s
-</span></span></code></pre></div><pre tabindex="0"><code>No language indicated, so no syntax highlighting. 
-But let&#39;s throw in a &lt;b&gt;tag&lt;/b&gt;.
-</code></pre><!-- raw HTML omitted -->
-<h5 id="blockquote">Blockquote</h5>
-<blockquote>
-<p>This is a blockquote example.</p>
-</blockquote>
-<!-- raw HTML omitted -->
-<h5 id="inline-html">Inline HTML</h5>
-<p>You can also use raw HTML in your Markdown, and it&rsquo;ll mostly work pretty well.</p>
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<h5 id="tables">Tables</h5>
-<p>Colons can be used to align columns.</p>
-<table>
-<thead>
-<tr>
-<th>Tables</th>
-<th style="text-align:center">Are</th>
-<th style="text-align:right">Cool</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>col 3 is</td>
-<td style="text-align:center">right-aligned</td>
-<td style="text-align:right">$1600</td>
-</tr>
-<tr>
-<td>col 2 is</td>
-<td style="text-align:center">centered</td>
-<td style="text-align:right">$12</td>
-</tr>
-<tr>
-<td>zebra stripes</td>
-<td style="text-align:center">are neat</td>
-<td style="text-align:right">$1</td>
-</tr>
-</tbody>
-</table>
-<p>There must be at least 3 dashes separating each header cell.
-The outer pipes (|) are optional, and you don&rsquo;t need to make the
-raw Markdown line up prettily. You can also use inline Markdown.</p>
-<table>
-<thead>
-<tr>
-<th>Markdown</th>
-<th>Less</th>
-<th>Pretty</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><em>Still</em></td>
-<td><code>renders</code></td>
-<td><strong>nicely</strong></td>
-</tr>
-<tr>
-<td>1</td>
-<td>2</td>
-<td>3</td>
-</tr>
-</tbody>
-</table>
-<!-- raw HTML omitted -->
-<h5 id="image">Image</h5>
-<p><img src="../../images/post/post-1.jpg" alt="image"></p>
-<!-- raw HTML omitted -->
-<h5 id="youtube-video">Youtube video</h5>
-
-<div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;">
-  <iframe src="https://www.youtube.com/embed/C0DPdy98e4c" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border:0;" allowfullscreen title="YouTube Video"></iframe>
-</div>
-
-
-        </div>
-
-        
-        
-      </div>
+<div class="presentation-container">
+    <!-- Progress Indicator -->
+    <div class="progress-bar-container">
+        <div class="progress-bar" id="progressBar"></div>
     </div>
-  </div>
-</section>
 
+    <!-- Slides Viewport -->
+    <div class="slides-viewport">
 
+        <!-- SLIDE 1: Title -->
+        <div class="slide active" id="slide-1">
+            <div class="title-slide-content">
+                <span class="title-badge">機場營運接管專案評估報告</span>
+                <h1>桃園國際機場第三航廈（T3）<br>航線搬遷策略分析簡報</h1>
+                <div class="subtitle">場站幾何效率、轉機動線與 PRM 地勤量能衝擊評估</div>
+                <div class="title-footer">
+                    <span><strong>報告單位：</strong> 桃園機場辦事處（桃辦處）</span>
+                    <span><strong>分析焦點：</strong> 18門容量極限 / 500m動線落差 / PRM成本模型</span>
+                    <span><strong>適用對象：</strong> 總部決策高層 & 航站協調會議</span>
+                </div>
+            </div>
+        </div>
 
-<footer class="text-capitalize">
-  <div class="container">
-    <div class="row justify-content-center">
-      <div class="col-12 text-center mb-5">
-        <a href="https://pengda168.github.io"><img src="https://pengda168.github.io/images/logo.png" alt="Michelle Lu 部落格"></a>
-      </div>
-               
-      <div class="col-lg-3 col-sm-6 mb-5">
-        <h6 class="mb-4">Contact Me</h6>
-        <ul class="list-unstyled">
-          
-          <li class="mb-3"><a class="text-dark" href="tel:0924**50**"><i
-                class="ti-mobile mr-3 text-primary"></i>0924**50**</a></li>
-          
-                     
-          <li class="mb-3"><i class="ti-location-pin mr-3 text-primary"></i>Taipei, Taiwan</li>
-          
-                     
-          <li class="mb-3"><a class="text-dark" href="mailto:demo@email.com"><i
-                class="ti-email mr-3 text-primary"></i>demo@email.com</a>
-          
-          </li>
-        </ul>
-      </div>
-      
-      <div class="col-lg-3 col-sm-6 mb-5">
-        <h6 class="mb-4">Social Contacts</h6>
-        <ul class="list-unstyled">
-          
-          <li class="mb-3"><a class="text-dark" href="#">facebook</a></li>
-          
-          <li class="mb-3"><a class="text-dark" href="#">twitter</a></li>
-          
-          <li class="mb-3"><a class="text-dark" href="#">instagram</a></li>
-          
-          <li class="mb-3"><a class="text-dark" href="#">github</a></li>
-          
-          <li class="mb-3"><a class="text-dark" href="#">linkedin</a></li>
-          
-        </ul>
-      </div>
-      <div class="col-lg-3 col-sm-6 mb-5">
-        <h6 class="mb-4">Categories</h6>
-        <ul class="list-unstyled">
-          <li class="mb-3"><a class="text-dark"
-              href="/categories/go-language/">Go language</a>
-          </li>
-          <li class="mb-3"><a class="text-dark"
-              href="/categories/html/">HTML</a>
-          </li>
-          <li class="mb-3"><a class="text-dark"
-              href="/categories/html-css/">HTML css</a>
-          </li>
-          <li class="mb-3"><a class="text-dark"
-              href="/categories/line-%e8%b2%bc%e5%9c%96/">Line 貼圖</a>
-          </li>
-          <li class="mb-3"><a class="text-dark"
-              href="/categories/programming-language/">Programming language</a>
-          </li>
-          <li class="mb-3"><a class="text-dark"
-              href="/categories/python/">Python</a>
-          </li>
-          <li class="mb-3"><a class="text-dark"
-              href="/categories/web-design/">Web design</a>
-          </li>
-        </ul>
-      </div>
-      <div class="col-lg-3 col-sm-6 mb-5">
-        <h6 class="mb-4">Quick Links</h6>
-        <ul class="list-unstyled">
-          
-          <li class="mb-3"><a class="text-dark" href="https://pengda168.github.io/about/">About</a></li>
-          
-          <li class="mb-3"><a class="text-dark" href="https://pengda168.github.io/blog/">Post</a></li>
-          
-        </ul>
-      </div>
-      <div class="col-12 border-top py-4 text-center">
-        | copyright © 2023  All Rights Reserved |
-      </div>
+        <!-- SLIDE 2: 登機門容量落差 -->
+        <div class="slide" id="slide-2">
+            <div class="slide-header">
+                <div class="slide-title-group">
+                    <div class="category">幾何效率與硬體容量</div>
+                    <h2>一、 登機門容量實質剖析：18 個（T3）vs. 20 個（T2）</h2>
+                </div>
+                <div class="header-tag">容量落差 -10%</div>
+            </div>
+            <div class="slide-content">
+                <div class="stat-banner">
+                    <div class="stat-item">
+                        <div class="stat-num amber">18 門</div>
+                        <div class="stat-sub">T3 南北廊廳總登機門數</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-num">20 門</div>
+                        <div class="stat-sub">T2 現有登機門數 (C區10 + D區10)</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-num red">-2 門</div>
+                        <div class="stat-sub">T3 實際容量遜於現有 T2</div>
+                    </div>
+                </div>
+
+                <div class="grid-2">
+                    <div class="card highlight-amber">
+                        <h3>破除「新航廈容量巨大」之迷思</h3>
+                        <ul>
+                            <li><strong>假性預期破滅：</strong> 大眾直觀認為新航廈足以容納全數航線，但客觀數據證明 T3 登機門容量比 T2 還少 2 個。</li>
+                            <li><strong>起降尖峰必然卡死：</strong> 若國籍三家航空公司皆將主戰線強塞入 T3，在僅 18 門的情形下，起降尖峰時段將爆發嚴重門位衝突。</li>
+                        </ul>
+                    </div>
+                    <div class="card highlight-navy">
+                        <h3>機坪調度與 T2 既有量能優勢</h3>
+                        <ul>
+                            <li><strong>外機坪接駁常態化：</strong> 因登機門不足，主力廣體客機將被迫頻繁改派至遠端接駁坪，大幅拉高地勤拖機成本並劣化旅客體驗。</li>
+                            <li><strong>T2 具備成熟穩定腹地：</strong> T2 擁有 20 個靠橋門位，能提供更充裕且成熟的靠橋作業腹地，無硬體縮水風險。</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 3: 500公尺折返代價 -->
+        <div class="slide" id="slide-3">
+            <div class="slide-header">
+                <div class="slide-title-group">
+                    <div class="category">幾何效率與硬體容量</div>
+                    <h2>二、 轉機動線與安檢中樞對比：500 公尺折返代價</h2>
+                </div>
+                <div class="header-tag">動線差距 +500m</div>
+            </div>
+            <div class="slide-content">
+                <table class="slide-table">
+                    <thead>
+                        <tr>
+                            <th style="width:20%;">比較項目</th>
+                            <th style="width:38%;">第二航廈（T2）現行運作</th>
+                            <th style="width:42%;">第三航廈（T3）規劃設計</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>安檢線幾何位置</strong></td>
+                            <td><span class="tag-green">C5 / D5 廊廳正中央</span></td>
+                            <td><span class="tag-red">航廈正中軸核心區</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>旅客步行特性</strong></td>
+                            <td><strong>就近分流</strong>：下機即達安檢，無效路徑趨近於零</td>
+                            <td><strong>向心折返</strong>：由廊廳深入中軸，再折返回原廊廳</td>
+                        </tr>
+                        <tr>
+                            <td><strong>轉機步行距離</strong></td>
+                            <td>基準距離（最短半徑內完成接轉）</td>
+                            <td><strong>需額外多走約 500 公尺之無效折返路程</strong></td>
+                        </tr>
+                        <tr>
+                            <td><strong>時間流失與 MCT</strong></td>
+                            <td>維持現行國際標竿 MCT，轉機銜接穩定</td>
+                            <td><strong>單趟多耗 8~12 分鐘</strong>，前段班機微幅延誤即面臨失接</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="slide-callout">
+                    <strong>T2 C5/D5「黃金樞紐」價值：</strong> 旅客過檢後可直接在登機廊廳內左向或右向抵達續程門位，免去跨棟或深入中軸之體力耗損，為最符合樞紐轉機效率之低耗損設計。
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 4: PRM 客群特徵與限制 -->
+        <div class="slide" id="slide-4">
+            <div class="slide-header">
+                <div class="slide-title-group">
+                    <div class="category">專題量化衝擊分析</div>
+                    <h2>三、 輪椅及特殊協助旅客（PRM）— 客群特徵與限制</h2>
+                </div>
+                <div class="header-tag">專人一對一剛性需求</div>
+            </div>
+            <div class="slide-content">
+                <div class="grid-3">
+                    <div class="card highlight-navy">
+                        <h3>1. 客群高齡與非母語特性</h3>
+                        <p>東南亞（菲/越/泰/印）經台北轉往北美航線為本公司樞紐核心，具備高度探親長者與非英語系母語者，PRM 比例高居全航網之冠。</p>
+                    </div>
+                    <div class="card highlight-amber">
+                        <h3>2. 廣體客機常態高量能</h3>
+                        <p>單架北美長程廣體機（B777-300ER）之轉機輪椅旅客（WCHR/WCHS/WCHC），在尖峰波次常態達 <strong>15 至 25 人次/班</strong>。</p>
+                    </div>
+                    <div class="card highlight-red">
+                        <h3>3. 專人服務無法自動化</h3>
+                        <p>依航政法規與航司 SOP，輪椅旅客須由地勤專人全程一對一推行引導，<strong>無法藉由自助報到機或指引標示替代</strong>，人力極具剛性。</p>
+                    </div>
+                </div>
+
+                <div class="card" style="background:#FFFBEB; border-color:#FCD34D;">
+                    <p style="color:#92400E; font-size:15px;">
+                        <strong>地勤作業關鍵痛點：</strong> 轉機輪椅旅客的移動效率完全取決於地勤推行人員的往返循環時間。一旦動線拉長 500 公尺，將使人力消耗呈階梯式翻倍，直接威脅航班正常作業。
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 5: PRM 推行時效量化測定 -->
+        <div class="slide" id="slide-5">
+            <div class="slide-header">
+                <div class="slide-title-group">
+                    <div class="category">專題量化衝擊分析</div>
+                    <h2>三、 PRM 推行時效量化測定：單次耗時暴增 60%</h2>
+                </div>
+                <div class="header-tag">循環耗時 30分 &rarr; 50分</div>
+            </div>
+            <div class="slide-content">
+                <table class="slide-table">
+                    <thead>
+                        <tr>
+                            <th style="width:25%;">作業評估維度</th>
+                            <th style="width:25%;">第二航廈（T2）基準</th>
+                            <th style="width:25%;">第三航廈（T3）折返動線</th>
+                            <th style="width:25%;">量化增幅影響</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>平均推行速度</strong></td>
+                            <td>0.9 ~ 1.0 m/s（安全速限）</td>
+                            <td>0.9 ~ 1.0 m/s（固定速限）</td>
+                            <td>負載輪椅無法超速奔跑，速率固定</td>
+                        </tr>
+                        <tr>
+                            <td><strong>500公尺淨增加時長</strong></td>
+                            <td>0 分鐘（基準）</td>
+                            <td><strong>+8.3 分鐘</strong>（500m / 1.0 m/s）</td>
+                            <td>單趟純位移時間直接墊高</td>
+                        </tr>
+                        <tr>
+                            <td><strong>人潮避讓與直梯等候</strong></td>
+                            <td>廊廳直通，干擾極低</td>
+                            <td><strong>+3.5 分鐘</strong>（穿越核心商場）</td>
+                            <td>中軸人流密集，直梯等候加劇停頓</td>
+                        </tr>
+                        <tr>
+                            <td><strong>單一服務循環總耗時</strong><br><span style="font-size:12px;color:#64748B;">(接客&rarr;安檢&rarr;送門&rarr;空返)</span></td>
+                            <td><strong>約 25 ~ 30 分鐘</strong></td>
+                            <td><strong>約 45 ~ 50 分鐘</strong></td>
+                            <td><span class="tag-red">單一 PRM 接送耗時淨增 +60%</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="stat-banner" style="margin-top:10px;">
+                    <div class="stat-item">
+                        <div class="stat-num amber">25~30 分</div>
+                        <div class="stat-sub">T2 單一推車循環耗時</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-num red">45~50 分</div>
+                        <div class="stat-sub">T3 單一推車循環耗時</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-num red">+60%</div>
+                        <div class="stat-sub">作業時長淨增幅</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 6: PRM 人力翻倍與連鎖延誤 -->
+        <div class="slide" id="slide-6">
+            <div class="slide-header">
+                <div class="slide-title-group">
+                    <div class="category">專題量化衝擊分析</div>
+                    <h2>三、 PRM 地勤人力激增與關艙延誤連鎖風險</h2>
+                </div>
+                <div class="header-tag">人力翻倍 + 關艙風險</div>
+            </div>
+            <div class="slide-content">
+                <div class="grid-2">
+                    <div class="card highlight-red">
+                        <h3>地勤人力配置呈「倍數級」膨脹</h3>
+                        <ul>
+                            <li><strong>人均周轉率驟降（2.5 &rarr; 1.0）：</strong> 在 T2 架構下，地勤推車人員於 90 分鐘 MCT 內平均可接送 2~3 位旅客；移至 T3 後，一人在整個波次內<strong>僅能接應 1 位旅客</strong>。</li>
+                            <li><strong>現場人力需求翻倍：</strong> 深夜波 8 個北美航班需接待 120~160 位 PRM。T2 僅需 50~60 名地勤；T3 則需 <strong>120~150 名專職人員</strong>，外包服務成本出現 <strong>100% 以上之淨暴增</strong>。</li>
+                        </ul>
+                    </div>
+                    <div class="card highlight-amber">
+                        <h3>班機關艙延誤（D0）與骨牌連鎖效應</h3>
+                        <ul>
+                            <li><strong>錯失優先登機，演變為壓線登機：</strong> 因 T3 多走 500 公尺（耗時多 12~15 分），前段若微延 15 分，PRM 抵達登機門時已錯過 Pre-boarding，變成客艙塞車時壓線登機。</li>
+                            <li><strong>準點關艙率破功與 CTOT 錯失：</strong> 單班有 2~3 位 PRM 遲到即延誤 10~20 分鐘，將直接錯失起飛許可（CTOT），造成深夜長程波次全線骨牌式延誤。</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
-  </div>
-</footer>
+
+    <!-- Presentation Controller Bar -->
+    <div class="controls-bar">
+        <div class="slide-counter" id="slideCounter">Slide 1 / 6</div>
+        <div class="key-hint">💡 支援鍵盤方向鍵 [ &larr; / &rarr; ] 或 [ 空白鍵 ] 切換簡報</div>
+        <div class="nav-buttons">
+            <button class="btn-nav" id="prevBtn" onclick="changeSlide(-1)">上一頁 (&larr;)</button>
+            <button class="btn-nav" id="nextBtn" onclick="changeSlide(1)">下一頁 (&rarr;)</button>
+        </div>
+    </div>
+</div>
 
 <script>
-  var indexURL = "https://pengda168.github.io/index.json"
+    let currentSlide = 1;
+    const totalSlides = 6;
+
+    function updateSlide() {
+        // Toggle active class
+        for (let i = 1; i <= totalSlides; i++) {
+            const slideEl = document.getElementById(`slide-${i}`);
+            if (i === currentSlide) {
+                slideEl.classList.add('active');
+            } else {
+                slideEl.classList.remove('active');
+            }
+        }
+
+        // Update progress bar
+        const progressPercent = (currentSlide / totalSlides) * 100;
+        document.getElementById('progressBar').style.width = `${progressPercent}%`;
+
+        // Update counter
+        document.getElementById('slideCounter').innerText = `Slide ${currentSlide} / ${totalSlides}`;
+
+        // Disable/enable buttons
+        document.getElementById('prevBtn').disabled = (currentSlide === 1);
+        document.getElementById('nextBtn').disabled = (currentSlide === totalSlides);
+    }
+
+    function changeSlide(direction) {
+        currentSlide += direction;
+        if (currentSlide < 1) currentSlide = 1;
+        if (currentSlide > totalSlides) currentSlide = totalSlides;
+        updateSlide();
+    }
+
+    // Keyboard Navigation
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
+            changeSlide(1);
+        } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+            changeSlide(-1);
+        }
+    });
+
+    // Initialize
+    updateSlide();
 </script>
 
-<!-- JS Plugins -->
-
-<script src="https://pengda168.github.io/plugins/jQuery/jquery.min.js"></script>
-
-<script src="https://pengda168.github.io/plugins/bootstrap/bootstrap.min.js"></script>
-
-<script src="https://pengda168.github.io/plugins/slick/slick.min.js"></script>
-
-<script src="https://pengda168.github.io/plugins/venobox/venobox.min.js"></script>
-
-<script src="https://pengda168.github.io/plugins/search/fuse.min.js"></script>
-
-<script src="https://pengda168.github.io/plugins/search/mark.js"></script>
-
-<script src="https://pengda168.github.io/plugins/search/search.js"></script>
-
-<!-- Main Script -->
-
-<script src="https://pengda168.github.io/js/script.min.js"></script>
-
-
-
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/2.2.1/js.cookie.min.js"></script>
-<div id="js-cookie-box" class="cookie-box cookie-box-hide">
-	This site uses cookies. By continuing to use this website, you agree to their use. <span id="js-cookie-button" class="btn btn-sm btn-primary ml-2">I Accept</span>
-</div>
-<script>
-	(function ($) {
-		const cookieBox = document.getElementById('js-cookie-box');
-		const cookieButton = document.getElementById('js-cookie-button');
-		if (!Cookies.get('cookie-box')) {
-			cookieBox.classList.remove('cookie-box-hide');
-			cookieButton.onclick = function () {
-				Cookies.set('cookie-box', true, {
-					expires:  2 
-				});
-				cookieBox.classList.add('cookie-box-hide');
-			};
-		}
-	})(jQuery);
-</script>
-
-
-<style>
-.cookie-box {
-  position: fixed;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  text-align: center;
-  z-index: 9999;
-  padding: 1rem 2rem;
-  background: rgb(71, 71, 71);
-  transition: all .75s cubic-bezier(.19, 1, .22, 1);
-  color: #fdfdfd;
-}
-
-.cookie-box-hide {
-  display: none;
-}
-</style>
 </body>
 </html>
